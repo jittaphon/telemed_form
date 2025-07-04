@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600;700&display=swap" rel="stylesheet">
-
+ <script src="https://unpkg.com/feather-icons"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -57,17 +57,33 @@
   </style>
 </head>
 
-<body class="min-h-screen flex items-center justify-center px-4 py-10">
 
-  <div class="w-full max-w-3xl">
-    <div class="bg-green-600 text-white py-4 px-6 rounded-t-xl">
-      <h1 class="text-2xl font-bold">ผลการดำเนินงาน <span class="font-light">Telemedicine ปีงบประมาณ 2568</span></h1>
-    </div>
-    <div class="bg-white p-4 rounded-b-xl mb-6 shadow">
-      <h2 class="italic text-sm text-gray-700">
-        ทางกลุ่มงานสุขภาพดิจิทัล สสจ.พะเยา ขอขอบคุณ สำหรับความร่วมมือเเละจะนำเสนอผลการสำรวจนี้ นำเสนอต่อผู้ตรวจรับราชการ รอบ 2 ต่อไป
-      </h2>
-    </div>
+<body class="min-h-screen flex flex-col justify-between">
+  
+<main class="px-4 py-10">
+
+
+  <div class="w-full max-w-3xl mx-auto">
+
+   <div class="bg-green-600 text-white py-4 px-6 rounded-t-xl flex items-center gap-3">
+  <i data-feather="activity" class="w-6 h-6"></i>
+  <h1 class="text-2xl font-bold">
+    ผลการดำเนินงาน 
+    <span class="font-light">Telemedicine ปีงบประมาณ 2568</span>
+  </h1>
+</div>
+
+<!-- ส่วนเนื้อหา -->
+<div class="bg-white p-6 rounded-b-xl mb-6 shadow-md">
+  <h2 class="text-gray-700 text-lg italic leading-relaxed flex items-start gap-2">
+    <i data-feather="message-circle" class="w-5 h-5 mt-1 text-green-600"></i>
+    <span>
+      ทางกลุ่มงานสุขภาพดิจิทัล สสจ.พะเยา ขอขอบคุณสำหรับความร่วมมือ 
+      และจะนำเสนอผลการสำรวจนี้ต่อผู้ตรวจราชการ รอบที่ 2 ต่อไป
+    </span>
+  </h2>
+</div>
+
 
     <form id="teleform" class="glass p-8 rounded-2xl shadow-2xl space-y-10 text-black" action="result.php" method="POST">
       <div class="bg-white rounded-xl shadow p-6 space-y-4">
@@ -125,9 +141,10 @@
 
 
       <div class="bg-white rounded-xl shadow p-6 space-y-4">
-        <h3 class="text-xl font-semibold text-blue-800 border-b pb-2">4.รูปแบบการให้บริการ *<span class="text-red-500">*</span></h3>
+        <h3 class="text-xl font-semibold text-blue-800 border-b pb-2">4.รูปแบบการให้บริการ<span class="text-red-500">*</span></h3>
         <div class="flex flex-col gap-2">
-          <label><input type="checkbox" name="service_type[]" value="B2B" class="mr-2" required>B2B (รพ. กับ รพ.)</label>
+          <label><input type="checkbox" name="service_type[]" value="B2B" class="mr-2" required>B2b (รพ. กับ รพ.)</label>
+          <label><input type="checkbox" name="service_type[]" value="B2b2" class="mr-2" >B2b (รพ. กับ รพ.สต)</label>
           <label><input type="checkbox" name="service_type[]" value="B2C" class="mr-2">B2C (รพ. กับผู้ป่วย)</label>
         </div>
       </div>
@@ -140,7 +157,7 @@
           <div class="flex items-center space-x-2">
             <label for="b2b_count" class="flex-shrink-0">5.1 จำนวน</label>
             <input type="number" id="b2b_count" name="b2b_count" min="0" placeholder="ระบุจำนวนครั้ง"
-              class="block w-24 border border-gray-300 rounded px-3 py-2 text-sm" required>
+              class="block w-26 border border-gray-300 rounded px-3 py-2 text-sm" required>
             <span class="flex-shrink-0">ครั้ง</span>
           </div>
 
@@ -155,6 +172,9 @@
                   class="ml-2 mt-1 block w-full border border-gray-300 rounded px-3 py-2 text-sm hidden"
                   placeholder="ระบุคลินิกเอกชน/อื่นๆ">
               </label>
+
+
+              
             </div>
           </div>
         </div>
@@ -168,31 +188,34 @@
           <div class="flex items-center space-x-2">
             <label for="HIV_patient" class="flex-shrink-0">6.1 HIV จำนวน</label>
             <input type="number" id="HIV_patient" name="HIV_patient" min="0" placeholder="ระบุจำนวนครั้ง"
-              class="block w-24 border border-gray-300 rounded px-3 py-2 text-sm" required>
+              class="block w-26 border border-gray-300 rounded px-3 py-2 text-sm" required>
             <span class="flex-shrink-0">ครั้ง</span>
           </div>
           <div class="flex items-center space-x-2">
             <label for="TB_patient" class="flex-shrink-0">6.2 TB จำนวน</label>
             <input type="number" id="TB_patient" name="TB_patient" min="0" placeholder="ระบุจำนวนครั้ง"
-              class="block w-24 border border-gray-300 rounded px-3 py-2 text-sm" required>
+              class="block w-26 border border-gray-300 rounded px-3 py-2 text-sm" required>
             <span class="flex-shrink-0">ครั้ง</span>
           </div>
           <div class="flex items-center space-x-2">
             <label for="bed_patient" class="flex-shrink-0">6.3 ติดเตียง</label>
             <input type="number" id="bed_patient" name="bed_patient" min="0" placeholder="ระบุจำนวนครั้ง"
-              class="block w-24 border border-gray-300 rounded px-3 py-2 text-sm" required>
+              class="block w-26 border border-gray-300 rounded px-3 py-2 text-sm" required>
             <span class="flex-shrink-0">ครั้ง</span>
           </div>
 
           <div class="flex items-center space-x-2">
             <label for="psychiatry_patient" class="flex-shrink-0">6.4 จิตเวช</label>
             <input type="number" id="psychiatry_patient" name="psychiatry_patient" min="0" placeholder="ระบุจำนวนครั้ง"
-              class="block w-24 border border-gray-300 rounded px-3 py-2 text-sm" required>
+              class="block w-26 border border-gray-300 rounded px-3 py-2 text-sm" required>
             <span class="flex-shrink-0">ครั้ง</span>
           </div>
         </div>
       </div>
 
+
+      
+   <!--  7. ท่านให้บริการจ่ายยาแบบใด?-->
       <div class="bg-white rounded-xl shadow p-6 space-y-4">
         <h3 class="text-xl font-semibold text-blue-800 border-b pb-2">
           7. ท่านให้บริการจ่ายยาแบบใด<span class="text-red-500">*</span>
@@ -204,22 +227,22 @@
             <label class="flex items-center">
               <input type="checkbox" id="healthRiderCheckbox" name="drug_delivery_type[]" value="Health_Rider" class="mr-2"> Health Rider จำนวน
             </label>
-            <input type="number" id="health_rider_count" name="Health_Rider_count" min="0" placeholder="ระบุจำนวนครั้ง"
-              class="block w-24 border border-gray-300 rounded px-3 py-2 text-sm">
+            <input disabled type="number" id="health_rider_count" name="health_rider_count" min="0"  placeholder="ระบุจำนวนครั้ง"
+              class="block w-26 border border-gray-300 rounded px-3 py-2 text-sm">
             <span class="flex-shrink-0">ครั้ง</span>
           </div>
           <div class="flex items-center space-x-2">
             <label class="flex items-center">
-              <input type="checkbox" id="postalCheckbox" name="drug_delivery_type[]" value="ส่งให้ทางไปรษณีย์" class="mr-2"> ส่งให้ทางไปรษณีย์ จำนวน
+              <input   type="checkbox" id="postalCheckbox" name="drug_delivery_type[]" value="ส่งให้ทางไปรษณีย์" class="mr-2"> ส่งให้ทางไปรษณีย์ จำนวน
             </label>
-            <input type="number" id="postal_count" name="postal_count" min="0" placeholder="ระบุจำนวนครั้ง"
-              class="block w-24 border border-gray-300 rounded px-3 py-2 text-sm">
+            <input type="number" disabled id="postal_count" name="postal_count" min="0" placeholder="ระบุจำนวนครั้ง"
+              class="block w-26 border border-gray-300 rounded px-3 py-2 text-sm">
             <span class="flex-shrink-0">ครั้ง</span>
           </div>
 
           <div class="flex items-center space-x-2">
             <label class="flex items-center">
-              <input type="checkbox" id="subdistrictHospitalCheckbox" name="drug_delivery_type[]" value="ส่งให้ทาง รพ.สต" class="mr-2"> ส่งให้ทาง รพ.สต
+              <input  type="checkbox" id="subdistrictHospitalCheckbox" name="drug_delivery_type[]" value="ส่งให้ทาง รพ.สต" class="mr-2"> ส่งให้ทาง รพ.สต
             </label>
           </div>
 
@@ -234,8 +257,8 @@
             <label class="flex items-center">
               <input type="checkbox" id="volunteerCheckbox" name="drug_delivery_type[]" value="ส่งให้ อสม." class="mr-2"> ส่งให้ อสม. จำนวน
             </label>
-            <input type="number" id="volunteer_count" name="Village_Health_Volunteer_count" min="0" placeholder="ระบุจำนวนครั้ง"
-              class="block w-24 border border-gray-300 rounded px-3 py-2 text-sm">
+            <input type="number"  disabled id="volunteer_count" name="Village_Health_Volunteer_count" min="0" placeholder="ระบุจำนวนครั้ง"
+              class="block w-26 border border-gray-300 rounded px-3 py-2 text-sm">
             <span class="flex-shrink-0">ครั้ง</span>
           </div>
 
@@ -249,9 +272,15 @@
               placeholder="ระบุประเภทอื่นๆ">
 
           </div>
+
+
         </div>
       </div>
+     
 
+
+
+   <!--  8. โรงพยาบาลมีระบบนัดหมาย ออนไลน์ หรือ ไม่ ?-->
       <div class="bg-white rounded-xl shadow p-6 space-y-4">
         <h3 class="text-xl font-semibold text-blue-800 border-b pb-2">8. โรงพยาบาลมีระบบนัดหมาย ออนไลน์ หรือ ไม่ ? <span class="text-red-500">*</span></h3>
         <div class="grid grid-cols-1 gap-2">
@@ -260,7 +289,9 @@
         </div>
       </div>
 
-      <div id="onlineAppointmentDetails" class="space-y-10">
+      
+   <!--  9. ใช้โปรแกรมอะไรในการนัดหมายออนไลน์ -->
+
         <div class="bg-white rounded-xl shadow p-6 space-y-4">
           <h3 class="text-xl font-semibold text-blue-800 border-b pb-2">
             9. ใช้โปรแกรมอะไรในการนัดหมายออนไลน์
@@ -273,20 +304,29 @@
           </div>
         </div>
 
+
+<!--   10. ปีงบประมาณ 2568 มีการใช้บริการนัดหมายออนไลน์จำนวนกี่ครั้ง (ตั้งเเต่ 1 ต.ค 67 - ปัจจุบัน) -->
+
+   
         <div class="bg-white rounded-xl shadow p-6 space-y-4">
-          <h3 class="text-xl font-semibold text-blue-800 border-b pb-2">
-            10. ปีงบประมาณ 2568 มีการใช้บริการนัดหมายออนไลน์จำนวนกี่ครั้ง (ตั้งเเต่ 1 ต.ค 67 - ปัจจุบัน)<span class="text-red-500">*</span>
-          </h3>
+        <h3 class="text-xl font-semibold text-blue-800 border-b pb-2">
+  10. ปีงบประมาณ 2568 มีการใช้บริการนัดหมายออนไลน์จำนวนกี่ครั้ง 
+  <span class="text-red-500">*</span><br>
+  (ตั้งแต่ 1 ต.ค. 67 - ปัจจุบัน)
+</h3>
+
           <div class="flex flex-col gap-2">
             <div class="flex items-center space-x-2">
               <span class="flex-shrink-0">จำนวนทั้งหมด</span>
               <input type="number" id="appointment_count" name="appointment_count" min="0" placeholder="ระบุจำนวนครั้ง"
-                class="block w-24 border border-gray-300 rounded px-3 py-2 text-sm">
+                class="block w-26 border border-gray-300 rounded px-3 py-2 text-sm">
               <span class="flex-shrink-0">ครั้ง</span>
             </div>
           </div>
         </div>
-      </div>
+
+
+   <!--   11.ในการให้บริการ Telemedicine มีการใช้ PHR View ร่วมด้วยหรอไม่ -->
       <div class="bg-white rounded-xl shadow p-6 space-y-4">
         <h3 class="text-xl font-semibold text-blue-800 border-b pb-2">
           11.ในการให้บริการ Telemedicine มีการใช้ PHR View ร่วมด้วยหรอไม่<span class="text-red-500">*</span>
@@ -299,6 +339,7 @@
         </div>
       </div>
 
+   <!--   12. จากการที่ทางโรงพยาบาลได้ให้บริการ Telemedicine / Telehealth ท่านคิดว่าผู้รับบริการได้รับประโยชน์อะไร / อย่างไรบ้าง-->
       <div class="bg-white rounded-xl shadow p-6 space-y-4">
         <h3 class="text-xl font-semibold text-blue-800 border-b pb-2">
           12. จากการที่ทางโรงพยาบาลได้ให้บริการ Telemedicine / Telehealth ท่านคิดว่าผู้รับบริการได้รับประโยชน์อะไร / อย่างไรบ้าง <span class="text-red-500">*</span>
@@ -322,10 +363,57 @@
       </div>
     </form>
   </div>
+  </main>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+
+ <footer class="bg-gray-800 text-white py-6">
+    <div class="container mx-auto text-center">
+      <p class="text-lg">&copy; 2025 ระบบสารสนเทศ ทุกสิทธิ์สงวน</p>
+      <p class="text-sm mt-2">ออกแบบและพัฒนาโดย ทีมงาน กลุ่มงานสุขภาพดิจิทัล สํานักงานสาธารณสุขจังหวัด พะเยา</p>
+    </div>
+  </footer>
+ 
+ 
+</body>
+
+
+
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
+   const mappings = [
+      { checkboxId: 'healthRiderCheckbox', inputId: 'health_rider_count' },
+      { checkboxId: 'postalCheckbox', inputId: 'postal_count' },
+      { checkboxId: 'volunteerCheckbox', inputId: 'volunteer_count' },
+    ];
+
+    mappings.forEach(({ checkboxId, inputId, isOther }) => {
+      const checkbox = document.getElementById(checkboxId);
+      const input = document.getElementById(inputId);
+
+      if (!checkbox || !input) {
+        console.warn(`Missing element: ${checkboxId} or ${inputId}`);
+        return;
+      }
+
+      // เริ่มต้น: ปิดไว้ก่อน
+      if (!isOther) {
+        input.disabled = true;
+      } else {
+        input.classList.add('hidden');
+      }
+
+      checkbox.addEventListener('change', () => {
+        if (isOther) {
+          input.classList.toggle('hidden', !checkbox.checked);
+        } else {
+          input.disabled = !checkbox.checked;
+        }
+      });
+    });
+
+
+
       gsap.from("#teleform", {
         duration: 1,
         opacity: 0,
@@ -404,27 +492,6 @@
         }));
       }
 
-      function setupAppointmentLogic() {
-        const radios = document.querySelectorAll('input[name="online_appointment_system"]');
-        const detailSection = document.getElementById("onlineAppointmentDetails");
-        const program = document.getElementById("program_meet");
-        const count = document.getElementById("appointment_count");
-
-        const toggle = () => {
-          const selected = document.querySelector('input[name="online_appointment_system"]:checked');
-          const show = selected && selected.value === "มี";
-          detailSection.style.display = show ? "block" : "none";
-          [program, count].forEach(i => {
-            i.disabled = !show;
-            i.required = show;
-            if (!show) i.value = "";
-          });
-        };
-
-        radios.forEach(r => r.addEventListener("change", toggle));
-        toggle();
-      }
-
       // Toggle Fields
       setupToggle("otherCheckbox", "otherTextInput", {
         required: true
@@ -432,18 +499,14 @@
       setupToggle("drugOtherCheckbox", "drugOtherDetail", {
         required: true
       });
-      setupToggle("healthRiderCheckbox", "health_rider_count", {
+       setupToggle("b2bOtherRadio", "b2bOtherText", {
         required: true
       });
-      setupToggle("postalCheckbox", "postal_count", {
-        required: true
-      });
-      setupToggle("volunteerCheckbox", "volunteer_count", {
-        required: true
-      });
-      setupRadioToggle("b2bOtherRadio", "b2bOtherText");
-      setupAppointmentLogic();
 
+
+      setupRadioToggle("b2bOtherRadio", "b2bOtherText");
+
+   
 
       // Handle form submission
       document.getElementById("teleform").addEventListener("submit", async (e) => {
@@ -493,20 +556,20 @@
         }
         html += '</div>';
 
-        const result = await Swal.fire({
-          title: "ยืนยันข้อมูลที่กรอก?",
-          html: html,
-          icon: "info",
-          showCancelButton: true,
-          confirmButtonText: "ส่งและดาวน์โหลด PDF",
-          cancelButtonText: "ยกเลิก",
-          customClass: {
-            htmlContainer: 'text-left',
-            confirmButton: 'bg-blue-600 text-white px-4 py-2 rounded shadow',
-            cancelButton: 'bg-gray-300 text-black px-4 py-2 rounded shadow'
-          },
-          buttonsStyling: false
-        });
+     const result = await Swal.fire({
+  title: "ยืนยันข้อมูลที่กรอก?",
+  html: html,
+  icon: "info",
+  showCancelButton: true,
+  confirmButtonText: "ส่งและดาวน์โหลด PDF",
+  cancelButtonText: "ยกเลิก",
+  customClass: {
+    htmlContainer: 'text-left',
+    confirmButton: 'bg-blue-600 text-white px-4 py-2 rounded shadow mr-2',
+    cancelButton: 'bg-gray-300 text-black px-4 py-2 rounded shadow'
+  },
+  buttonsStyling: false
+});
 
         if (result.isConfirmed) {
           const now = new Date();
@@ -580,6 +643,8 @@
           URL.revokeObjectURL(blobUrl);
 
           formData.append('pdf_file', pdfBlob, filename);
+          
+          console.log(formData)
 
           try {
             const response = await fetch('save_data.php', {
@@ -607,6 +672,8 @@
       });
     });
   </script>
-</body>
 
+  <script>
+  feather.replace();
+</script>
 </html>
