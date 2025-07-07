@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // ให้ $project_directory = '/telemedicine_form/';
     // ถ้าเว็บของคุณคือ http://192.168.100.12/ (ไม่มีโฟลเดอร์ย่อย)
     // ให้ $project_directory = '/';
-    $project_directory = '/telemedicine_form/'; // <<< แก้ไขตรงนี้ (เช่น '/your_project_folder/')
+    $project_directory = '/datahub/TeleMed/';
 
     $base_url = $protocol . "://" . $host . $project_directory;
 
