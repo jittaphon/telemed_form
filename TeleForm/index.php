@@ -478,7 +478,7 @@
       },
       "7. การจ่ายยา": {
         "drug_delivery_type[]": "7. ประเภทการจ่ายยา",
-        Health_Rider_count: " Health Rider",
+        health_rider_count: " Health Rider",
         postal_count: "ไปรษณีย์",
         subdistrictHospitalCheckbox: "ส่งให้ทาง รพ.สต",
         Village_Health_Volunteer_count: "ส่งให้ ทาง อสม.",
