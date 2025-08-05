@@ -1,0 +1,7 @@
+%%sql
+SELECT DISTINCT CHRONIC 
+FROM chronic 
+WHERE TRIM(UPPER(CHRONIC)) LIKE 'C43%';
+
+
+TRIM(UPPER(__________)) ------------------------------ กันเหนี่ยวตัวเล็กใหญ๋ + ช่องว่าง

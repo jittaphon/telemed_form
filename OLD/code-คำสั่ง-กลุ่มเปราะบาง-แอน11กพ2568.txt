@@ -1,0 +1,149 @@
+
+// 1แอน---11กพ2568--อายุ60ปีขั้นไป
+
+SELECT  CONCAT(pre.prename, p.`NAME`," ",p.LNAME) as "ชื่อ-สกุล" , s.sexname, p.age_y , p.addr ,RIGHT(p.check_vhid,2) as "หมู่ที่",
+        ta.tambonname as "ตำบล", pu.ampurname as "อำเภอ", c.changwatname as "จังหวัด" 
+FROM t_person_cid p 
+LEFT JOIN cprename pre ON pre.id_prename = p.PRENAME 
+LEFT JOIN csex s ON s.SEX = p.Sex
+LEFT JOIN ctambon ta ON ta.tamboncodefull = SUBSTR(p.check_vhid,1,6)
+LEFT JOIN cchangwat c ON c.changwatcode = SUBSTR(p.check_vhid,1,2)
+LEFT JOIN campur pu ON pu.ampurcodefull = SUBSTR(p.check_vhid,1,4)
+
+WHERE  (p.NATION = "099") AND (p.DISCHARGE = "9" AND p.DISCHARGE <> '1')  AND (LEFT(p.check_vhid,2) = '56')  AND (p.TYPEAREA in ('1','3')) 
+		AND (p.age_y >='60')
+GROUP BY p.CID
+ORDER BY pu.ampurcodefull , ta.tamboncodefull , p.vhid
+
+--------------------------------------
+
+
+// 2แอน---11กพ2568-อายุ0-5ปี  
+*** และเปลี่ยนตัวเลขอายุ p.age_y เป็นอายุอื่น ตามต้องการ ***
+
+SELECT  CONCAT(pre.prename, p.`NAME`," ",p.LNAME) as "ชื่อ-สกุล" , s.sexname, p.age_y , p.addr ,RIGHT(p.check_vhid,2) as "หมู่ที่",
+        ta.tambonname as "ตำบล", pu.ampurname as "อำเภอ", c.changwatname as "จังหวัด" 
+FROM t_person_cid p 
+LEFT JOIN cprename pre ON pre.id_prename = p.PRENAME 
+LEFT JOIN csex s ON s.SEX = p.Sex
+LEFT JOIN ctambon ta ON ta.tamboncodefull = SUBSTR(p.check_vhid,1,6)
+LEFT JOIN cchangwat c ON c.changwatcode = SUBSTR(p.check_vhid,1,2)
+LEFT JOIN campur pu ON pu.ampurcodefull = SUBSTR(p.check_vhid,1,4)
+
+WHERE  (p.NATION = "099") AND (p.DISCHARGE = "9" AND p.DISCHARGE <> '1')  AND (LEFT(p.check_vhid,2) = '56')  AND (p.TYPEAREA in ('1','3')) 
+		    AND (p.age_y BETWEEN '0' and '5')
+GROUP BY p.CID
+ORDER BY pu.ampurcodefull , ta.tamboncodefull , p.vhid
+
+-------------------------------------------
+
+// 3-7  >> แอน-11กพ2568_2-j440-j449-ถุงลมปอดอุดกั้นเรื้อรัง
+*** และโรคอื่นๆ ก็ให้เปลี่ยนตรงที่ รหัส diag  ตามต้องการ ***
+{
+J450-J459-หอบหืด
+J30-j399-โรคภูมิแพ้
+I210-I219-หัวใจ
+I500-I509-หัวใจ
+}
+
+SELECT  CONCAT(a.prename, a.`NAME`," ",a.LNAME) as "ชื่อ-สกุล" , a.sexname, a.age_y , a.addr, 
+				v.villagecode as "moo" , ta.tambonname as "tambon" , am.ampurname as "ampur" , c.changwatname as "changwat" 
+	from (
+	SELECT d.DIAGCODE, d.DATE_SERV, d.HOSPCODE, h.hosname , d.CID, cp.prename, t.`NAME`, t.LNAME, t.BIRTH, t.addr, t.check_typearea , t.check_vhid , t.vhid,
+					s.sexname, t.age_y
+	FROM diagnosis_opd d
+	LEFT JOIN chospital h ON h.hoscode = d.HOSPCODE
+	LEFT JOIN  t_person_cid t ON t.CID  = d.CID
+	LEFT JOIN cprename cp ON cp.id_prename = t.PRENAME
+	LEFT JOIN csex s ON s.SEX = t.Sex
+	WHERE (d.DIAGCODE BETWEEN 'j440' and 'j449') AND (d.DATE_SERV BETWEEN '2023-10-01' and '2024-09-30') and d.CID <> "" 
+	AND LEFT(t.check_vhid,2) ='56' AND t.NATION IN ('099') AND	(t.DISCHARGE = 9 AND t.DISCHARGE <> '1') AND (t.check_typearea in ('1','3'))
+	) as a 
+LEFT JOIN cchangwat c ON c.changwatcode = SUBSTR(a.check_vhid,1,2)
+LEFT JOIN campur am ON am.ampurcodefull = SUBSTR(a.check_vhid,1,4)
+LEFT JOIN ctambon ta ON ta.tamboncodefull = SUBSTR(a.check_vhid,1,6)
+LEFT JOIN cvillage v ON v.villagecodefull =  SUBSTR(a.check_vhid,1,8)
+GROUP BY a.CID
+ORDER BY am.ampurcodefull , ta.tamboncodefull , a.vhid
+  
+--------------------------------
+
+//  8แอน---11กพ68-รายชื่อ-ติดเตียง 
+
+
+SELECT CONCAT(a.prename, a.`NAME`," ",a.LNAME) as "ชื่อ-สกุล", a.sexname , a.age_y,   v.villagecode as "moo", a.addr ,
+				ta.tambonname as "tambon" , am.ampurname as "ampur" , c.changwatname as "changwat" 
+FROM (
+SELECT	sp.HOSPCODE, sp.PPSPECIAL, t.age_y, cp.prename, 	t.`NAME`,	t.LNAME, 	t.SEX, s.sexname, t.NATION,
+				t.DISCHARGE, t.TYPEAREA, 	t.check_vhid, t.addr, t.vhid
+			FROM	tmp_specialpp sp
+			LEFT JOIN	t_person_cid t	ON 		t.CID = sp.CID
+			LEFT JOIN csex s ON s.SEX = t.Sex
+			LEFT JOIN cprename cp ON cp.id_prename = t.PRENAME
+					WHERE	PPSPECIAL IN ('1B1282') and (t.TYPEAREA IN ('1','3')) AND t.NATION IN (99) AND	t.DISCHARGE IN (9) 
+			GROUP BY sp.CID
+				) as a
+LEFT JOIN cchangwat c ON c.changwatcode = SUBSTR(a.check_vhid,1,2)
+LEFT JOIN campur am ON am.ampurcodefull = SUBSTR(a.check_vhid,1,4)
+LEFT JOIN ctambon ta ON ta.tamboncodefull = SUBSTR(a.check_vhid,1,6)
+LEFT JOIN cvillage v ON v.villagecodefull =  SUBSTR(a.check_vhid,1,8)
+ORDER BY am.ampurcodefull,  ta.tamboncodefull,  a.vhid
+
+------------------------
+// 9  9แอน---11-กพ-68-รายชื่อ-หญิงตั้งครรภ์-ณ ปัจจุบัน
+
+SELECT b.full , b.age_y, b.weekk, b.addr ,RIGHT(b.check_vhid,2) as mooo, ta.tambonname as "tambon" , am.ampurname as "ampur" , c.changwatname as "changwat"
+FROM
+(
+SELECT a.*
+FROM
+	(
+		SELECT  pr.HOSPCODE, pr.PID, pr.CID ,pr.LMP , pr.EDC,  pr.GRAVIDA , (DATEDIFF(CURRENT_DATE,pr.LMP)/7) as "weekk",
+			t.NATION, t.DISCHARGE, t.TYPEAREA, t.check_vhid, 
+			CONCAT(cp.prename, t.`NAME`," ",t.LNAME) as "full" , s.sexname, t.age_y , t.addr ,t.vhid
+		from prenatal pr
+		LEFT JOIN	t_person_cid t	ON 		t.CID = pr.CID
+		LEFT JOIN cprename cp ON cp.id_prename = t.PRENAME	
+		LEFT JOIN csex s ON s.SEX = t.Sex	
+		WHERE  (LEFT(pr.CID,1) != 0)  AND (t.NATION in ("099"))	
+			AND (t.DISCHARGE = "9" AND t.DISCHARGE <> '1')  AND (LEFT(t.check_vhid,2) = '56')
+													
+		GROUP BY CID
+		ORDER BY (DATEDIFF(CURRENT_DATE,pr.LMP)/7) 
+		) as a
+WHERE a.WEEKk <= '42'
+) as b 
+LEFT JOIN cchangwat c ON c.changwatcode = SUBSTR(b.check_vhid,1,2)
+LEFT JOIN campur am ON am.ampurcodefull = SUBSTR(b.check_vhid,1,4)
+LEFT JOIN ctambon ta ON ta.tamboncodefull = SUBSTR(b.check_vhid,1,6)
+LEFT JOIN cvillage v ON v.villagecodefull =  SUBSTR(b.check_vhid,1,8)
+ORDER BY am.ampurcodefull , ta.tamboncodefull , b.vhid
+
+-----------------------------------
+
+// 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

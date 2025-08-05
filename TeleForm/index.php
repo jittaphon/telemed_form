@@ -154,7 +154,7 @@
 
         <div class="bg-white rounded-xl shadow p-6 space-y-4">
           <h3 class="text-xl font-semibold text-blue-800 border-b pb-2">
-            5. กรณีให้บริการแบบ B2B (ครั้งที่ 1 ต.ค. 67 - ปัจจุบัน) <span class="text-red-500">*</span>
+            5. กรณีให้บริการแบบ B2B (ครั้งที่ 1 ต.ค. 67 - ปัจจุบัน) <span class="text-red-500">*</span> <span class="flex-shrink-0">( ถ้าไม่มีให้ใส่ 0 )</span>
           </h3>
           <div class="flex flex-col gap-2">
             <div class="flex items-center space-x-2">
@@ -189,7 +189,7 @@
 
         <div class="bg-white rounded-xl shadow p-6 space-y-4">
           <h3 class="text-xl font-semibold text-blue-800 border-b pb-2">
-            6. ให้บริการกับผู้ป่วย ตั้งเเต่ (1 ต.ค. 67 - ปัจจุบัน) <span class="text-red-500">*</span>
+            6. ให้บริการกับผู้ป่วย ตั้งเเต่ (1 ต.ค. 67 - ปัจจุบัน) <span class="text-red-500">*</span> ( ถ้าไม่มีให้ใส่ 0 )
           </h3>
           <div class="flex flex-col gap-2">
             <div class="flex items-center space-x-2">
@@ -225,7 +225,7 @@
         <!--  7. ท่านให้บริการจ่ายยาแบบใด?-->
         <div class="bg-white rounded-xl shadow p-6 space-y-4">
           <h3 class="text-xl font-semibold text-blue-800 border-b pb-2">
-            7. ท่านให้บริการจ่ายยาแบบใด<span class="text-red-500">*</span>
+            7. ท่านให้บริการจ่ายยาแบบใด<span class="text-red-500">*</span> <span class="flex-shrink-0">( ถ้าไม่มีให้ใส่ 0 )</span>
           </h3>
           <div class="flex flex-col gap-2">
 
@@ -234,7 +234,7 @@
               <label class="flex items-center">
                 <input type="checkbox" id="healthRiderCheckbox" name="drug_delivery_type[]" value="Health_Rider" class="mr-2"> Health Rider จำนวน
               </label>
-              <input disabled type="number" id="health_rider_count" name="health_rider_count" min="0" placeholder="ระบุจำนวนครั้ง"
+              <input disabled type="number" id="health_rider_count" name="health_rider_count" min="0" required placeholder="ระบุจำนวนครั้ง"
                 class="block w-26 border border-gray-300 rounded px-3 py-2 text-sm">
               <span class="flex-shrink-0">ครั้ง</span>
             </div>
@@ -242,7 +242,7 @@
               <label class="flex items-center">
                 <input type="checkbox" id="postalCheckbox" name="drug_delivery_type[]" value="ส่งให้ทางไปรษณีย์" class="mr-2"> ส่งให้ทางไปรษณีย์ จำนวน
               </label>
-              <input type="number" disabled id="postal_count" name="postal_count" min="0" placeholder="ระบุจำนวนครั้ง"
+              <input type="number" disabled id="postal_count" name="postal_count" min="0" required placeholder="ระบุจำนวนครั้ง"
                 class="block w-26 border border-gray-300 rounded px-3 py-2 text-sm">
               <span class="flex-shrink-0">ครั้ง</span>
             </div>
@@ -317,14 +317,14 @@
           <h3 class="text-xl font-semibold text-blue-800 border-b pb-2">
             10. ปีงบประมาณ 2568 มีการใช้บริการนัดหมายออนไลน์จำนวนกี่ครั้ง
             <span class="text-red-500">*</span><br>
-            (ตั้งแต่ 1 ต.ค. 67 - ปัจจุบัน)
+            (ตั้งแต่ 1 ต.ค. 67 - ปัจจุบัน) <span class="flex-shrink-0">( ถ้าไม่มีให้ใส่ 0 )</span>
           </h3>
 
           <div class="flex flex-col gap-2">
             <div class="flex items-center space-x-2">
               <span class="flex-shrink-0">จำนวนทั้งหมด</span>
               <input type="number" id="appointment_count" name="appointment_count" min="0" placeholder="ระบุจำนวนครั้ง"
-                class="block w-24 border border-gray-300 rounded px-3 py-2 text-sm">
+                class="block w-25 border border-gray-300 rounded px-3 py-2 text-sm">
 
               <span class="flex-shrink-0">ครั้ง</span>
             </div>
@@ -343,7 +343,7 @@
           </h3>
           <div class="flex flex-col gap-2">
             <div class="flex items-center space-x-2 w-full">
-              <textarea id="patientBenefitsInput" name="server_location"
+              <textarea id="server_location" name="server_location"
                 placeholder=""
                 class="block w-full border border-gray-300 rounded px-3 py-2 text-sm h-24 resize-y" required></textarea>
             </div>
@@ -551,109 +551,122 @@
       const formData = new FormData(form);
       const rawData = {};
 
-      // เพิ่มข้อมูลจาก input ที่ถูก disabled เข้าไปใน formData ก่อน
+      // ✅ ดึง input ที่ disabled ด้วย (ป้องกัน key ซ้ำ)
+      const seen = new Set();
       const allInputs = form.querySelectorAll('input, select, textarea');
       allInputs.forEach(input => {
-        if (input.name && input.disabled) {
+        if (input.name && input.disabled && !seen.has(input.name)) {
           formData.append(input.name, input.value);
+          seen.add(input.name);
         }
       });
-      // ... (โค้ดส่วนบนยังคงเหมือนเดิม) ...
 
-      // ... (โค้ดส่วนบนเหมือนเดิม) ...
-
+      // ✅ แปลง FormData เป็น rawData แบบไม่ให้ key ซ้ำ
       formData.forEach((value, key) => {
         if (key.endsWith('[]')) {
-          key = key.slice(0, -2);
-          if (!rawData[key]) rawData[key] = [];
-          rawData[key].push(value);
-        } else if (rawData[key]) {
-          if (!Array.isArray(rawData[key])) rawData[key] = [rawData[key]];
-          rawData[key].push(value);
+          const cleanKey = key.slice(0, -2);
+          if (!rawData[cleanKey]) rawData[cleanKey] = [];
+          rawData[cleanKey].push(value);
         } else {
-          rawData[key] = value;
+          if (!rawData[key]) {
+            rawData[key] = value;
+          }
         }
       });
 
-      // --- ส่วนที่แก้ไขเพื่อพยายามให้อยู่ในหน้าเดียว (Print CSS) ---
+      // ✅ สร้าง HTML สำหรับพิมพ์/ดูผลลัพธ์
       let html = `
 <style>
-    /* สไตล์ทั่วไปสำหรับกล่องและข้อความ */
+  body {
+    font-family: 'Noto Sans Thai', sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  .printable-content {
+    padding: 15px;
+    background-color: #ffffff;
+  }
+  .section {
+    margin-bottom: 1em;
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid #eee;
+  }
+  h3 {
+    color: #047857;
+    font-size: 1.3em;
+    margin: 1em 0 0.5em 0;
+    padding-bottom: 0.2em;
+    border-bottom: 1px solid #d1fae5;
+  }
+  p {
+    margin: 0 0 0.4em 0;
+    line-height: 1.6;
+    font-size: 1em;
+    white-space: pre-line;       /* ✅ ทำให้ขึ้นบรรทัดตาม \n */
+    word-break: break-word;      /* ✅ ตัดคำยาวไม่ให้ล้น */
+  }
+  b {
+    font-weight: bold;
+  }
+  ul {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin: 0.3em 0;
+  }
+  li {
+    margin-bottom: 0.1em;
+    line-height: 1.5;
+    font-size: 1em;
+    white-space: pre-line;
+    word-break: break-word;
+  }
+
+  @media print {
     body {
-        font-family: 'Noto Sans Thai', sans-serif; /* ใช้ฟอนต์ไทย */
-        margin: 0;
-        padding: 0;
+      transform: scale(0.95);
+      transform-origin: top left;
+      width: 100%;
+      height: auto;
+      overflow: hidden;
     }
-    div {
-        text-align: left;
-        padding: 15px; /* ลด padding ลงเล็กน้อย */
-        background-color: #ffffff; /* เปลี่ยนเป็นขาวบริสุทธิ์ */
-        border-radius: 6px; /* ลด border-radius ลง */
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* ลด shadow ลง */
+    * {
+      break-inside: avoid;
+    }
+    .no-break {
+      break-inside: avoid !important;
+      page-break-inside: avoid !important;
+    }
+    h3, p, ul, li {
+      break-inside: avoid !important;
+      page-break-inside: avoid !important;
     }
     h3 {
-        color:#047857;
-        border-bottom:1px solid #d1fae5; /* ลดเส้นคั่นเป็น 1px */
-        margin-top: 1.5em; /* ลด margin-top เล็กน้อย */
-        padding-bottom: 0.5em; /* ลด padding-bottom เล็กน้อย */
-        font-size: 1.3em; /* ลดขนาดฟอนต์หัวข้อเล็กน้อย */
+      font-size: 1.1em;
+      margin-top: 1em;
     }
-    p {
-        margin-bottom: 0.6em; /* ลด margin-bottom เพื่อให้ชิดกันขึ้น */
-        line-height: 1.5; /* ลด line-height เพื่อให้ชิดกันขึ้น */
-        font-size: 1em; /* ขนาดฟอนต์ปกติ */
+    p, li {
+      font-size: 0.95em;
+      margin-bottom: 0.3em;
     }
-    b {
-        font-weight: bold;
-    }
-    ul {
-        list-style-type: disc; /* ใช้ bullet point */
-        margin-top: 0.5em; /* ให้ list ไม่ชิดด้านบนของ p มากไป */
-        margin-bottom: 0.5em; /* ให้ list ไม่ชิดด้านล่างของ p มากไป */
-        padding-left: 20px; /* เยื้องเข้ามาเล็กน้อย */
-    }
-    li {
-        margin-bottom: 0.1em; /* ลด margin-bottom ของแต่ละรายการใน list */
-        line-height: 1.4; /* ลด line-height ของแต่ละรายการใน list */
-    }
-
-    /* สไตล์พิเศษสำหรับ PDF / การพิมพ์ */
-    @media print {
-        /* บีบเนื้อหาให้เล็กลงถ้าจำเป็น */
-        body {
-            transform: scale(0.95); /* ลองลดขนาดทั้งหน้าลง 5% */
-            transform-origin: top left; /* ให้บีบจากมุมซ้ายบน */
-            width: 100%; /* ตั้งค่าความกว้างให้คงที่ */
-            height: auto; /* ความสูงปรับตามเนื้อหา */
-            overflow: hidden; /* ซ่อนส่วนเกิน */
-        }
-        /* ถ้ามีส่วนที่ไม่ต้องการให้แบ่งหน้า ให้ใช้ */
-        .no-break {
-            page-break-inside: avoid !important;
-        }
-        /* ถ้าต้องการให้บางส่วนขึ้นหน้าใหม่ */
-        .page-break {
-            page-break-before: always;
-        }
-    }
+  }
 </style>
-<div class="printable-content">`; // เพิ่ม class เพื่อระบุส่วนที่จะพิมพ์
+
+<div class="printable-content">
+`;
 
       for (const section in questionMap) {
-        html += `<h3 class="no-break">${section}</h3>`; // เพิ่ม class no-break
+        html += `<div class="section no-break"><h3>${section}</h3>`;
         const group = questionMap[section];
+
         for (const key in group) {
-          let actualKey = key;
-          if (key.endsWith('[]')) {
-            actualKey = key.slice(0, -2);
-          }
+          let actualKey = key.endsWith('[]') ? key.slice(0, -2) : key;
 
           if (rawData[actualKey]) {
             let val = rawData[actualKey];
             let displayVal = '';
 
             if (Array.isArray(val)) {
-              displayVal = '<ul class="no-break">'; // เพิ่ม class no-break ให้ ul ด้วย
+              displayVal = '<ul>';
               val.forEach(item => {
                 displayVal += `<li>${item}</li>`;
               });
@@ -662,18 +675,21 @@
               displayVal = val;
             }
 
-            if (/_count$/.test(actualKey)) {
-              if (!Array.isArray(rawData[actualKey])) {
-                displayVal += " ครั้ง";
-              }
+            if (/_count$/.test(actualKey) && !Array.isArray(val)) {
+              displayVal += " ครั้ง";
             }
 
-            html += `<p class="no-break"><b>${group[key]}:</b> ${displayVal}</p>`; // เพิ่ม class no-break
+            html += `<p><b>${group[key]}:</b> ${displayVal}</p>`;
           }
         }
+
+        html += `</div>`; // end section
       }
+
       html += '</div>';
-      // --- สิ้นสุดส่วนที่แก้ไข ---
+
+      // ✅ จากตรงนี้คุณจะสามารถใช้ `html` นี้แสดงผล หรือ export PDF ได้เลย
+
 
       const result = await Swal.fire({
         title: "ยืนยันข้อมูลที่กรอก?",
